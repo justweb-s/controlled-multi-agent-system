@@ -1,8 +1,0 @@
-# Configurazione principale del progetto Scientific Calculator
-application:
-  name: scientific_calculator
-  version: 1.0.0
-  author: "Nome Autore"
-
-display:
-  mode: gui
