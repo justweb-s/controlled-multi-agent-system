@@ -1,5 +1,6 @@
 import os
 import streamlit as st
+import subprocess
 
 def crea_file(percorso_file: str) -> str:
     try:
@@ -267,10 +268,75 @@ def gestione_file(azione: str, percorso: str, contenuto: str = "") -> str:
     except Exception as e:
         return f"Errore durante l'operazione '{azione}': {e}"
 
+
+def lista_contenuto_cartella(percorso: str = None) -> str:
+    """
+    Restituisce una stringa con l'elenco di tutti i file e le cartelle in un determinato percorso.
+    Se il percorso non viene fornito, utilizza la cartella corrente.
+
+    Args:
+        percorso (str, opzionale): Il percorso della cartella da analizzare. Default: cartella corrente.
+
+    Returns:
+        str: Elenco di file e cartelle in formato leggibile, oppure un messaggio di errore.
+    """
+    try:
+        # Usa la cartella corrente se il percorso è vuoto
+        if percorso is None:
+            percorso = os.getcwd()
+        
+        # Controlla che il percorso esista
+        if not os.path.exists(percorso):
+            return f"Errore: il percorso '{percorso}' non esiste."
+        
+        # Inizializza il risultato come stringa
+        risultato = f"Contenuto di '{percorso}':\n"
+        
+        for elemento in os.listdir(percorso):
+            elemento_path = os.path.join(percorso, elemento)
+            if os.path.isfile(elemento_path):
+                risultato += f"  [File] {elemento}\n"
+            elif os.path.isdir(elemento_path):
+                risultato += f"  [Cartella] {elemento}\n"
+        
+        return risultato
+    except Exception as e:
+        return f"Errore durante la lettura del contenuto della cartella: {e}"
+
+    
+
+def esegui_comando_windows(comando: str) -> str:
+    """
+    Esegue un comando Windows e restituisce l'output come stringa.
+    
+    Args:
+        comando (str): Il comando Windows da eseguire.
+        
+    Returns:
+        str: L'output del comando o il messaggio di errore.
+    """
+    try:
+        # Esegue il comando utilizzando subprocess
+        risultato = subprocess.run(
+            comando,  # Comando da eseguire
+            shell=True,  # Necessario per comandi complessi su Windows
+            text=True,  # Restituisce output come stringhe
+            stdout=subprocess.PIPE,  # Cattura l'output standard
+            stderr=subprocess.PIPE   # Cattura gli errori
+        )
+        
+        # Controlla il codice di ritorno per verificare il successo
+        if risultato.returncode == 0:
+            return risultato.stdout.strip()  # Output del comando
+        else:
+            return f"Errore nell'esecuzione del comando:\n{risultato.stderr.strip()}"
+    except Exception as e:
+        return f"Errore generico: {e}"
+
+
+# Esempio di utilizzo
 if __name__ == "__main__":
-    base_path = os.path.abspath("progetto1")
-    print(f"Creazione struttura in: {base_path}")
-    risultato = crea_struttura_progetto(base_path)
+    # Specifica un comando Windows da eseguire
+    comando = "dir"  # Esempio: elenco file nella directory corrente
+    risultato = esegui_comando_windows(comando)
     print(risultato)
-
-

@@ -1,4 +1,4 @@
-from tools import gestione_file, scambia_messaggio, esegui_file_python
+from tools import gestione_file, scambia_messaggio, esegui_file_python, esegui_comando_windows
 from Routine import run_full_turn, execute_tool_call
 import streamlit as st
 from Utility import message_to_dict
@@ -8,7 +8,8 @@ import json
 tools = [
     gestione_file,
     scambia_messaggio,
-    esegui_file_python
+    esegui_file_python,
+    esegui_comando_windows
 ]
 
 # ========= DIVERSI PROMPT (AGENTI) =========
@@ -16,7 +17,10 @@ system_message_coder = (
 """
 Sei un agente sviluppatore software. Il tuo compito è implementare il codice basandoti sulle specifiche fornite dall'agente architetto. Segui rigorosamente la struttura del progetto e le indicazioni tecniche, assicurandoti di rispettare le migliori pratiche di sviluppo.
 
-è fondamentale che tu legga il file del piano (se non è stato creato dovrai farlo) che dovrai seguire, un solo passo alla volta, ed aggiornarne lo stato (da fare, in corso, fatto) ogni volta che eseguirai con successo un passo (aggiorna sempre il file, è fondamentale quanto leggerlo).
+è fondamentale che tu legga il file del piano (se non è stato creato dovrai farlo) che dovrai seguire, un solo passo alla volta, ed aggiornarne lo stato (da fare, in corso, fatto) ogni volta che eseguirai con successo un passo (aggiorna sempre il file, è fondamentale quanto leggerlo). Il file è
+
+- **/plans**
+  -  piano_developer.md
 
 Quando consideri le cartelle del progetto ricordati di aggiungere sempre la cartella del nome del progetto.
 Ad esempio: se devi creare un file in docs e il progetto si chiama discoteca, dovrai crearlo in discoteca/docs
@@ -41,6 +45,7 @@ Esegui i seguenti passaggi:
 
 Sii preciso e professionale nell’implementazione, assicurandoti che il codice sia modulare, scalabile e facilmente manutenibile. Lavora in sinergia con le direttive dell'architetto, rispettando la struttura e i requisiti forniti.
 Affronta un file alla volta e concordane il contenuto
+Ricordati sempre che puoi eseguire comandi su questa macchina windows
 """
 )
 # ========= STREAMLIT APP =========
