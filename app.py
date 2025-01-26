@@ -1,21 +1,16 @@
-from tools import crea_file, scrivi_file, aggiungi_a_file, leggi_file, elimina_file, crea_cartella, elimina_cartella, scambia_messaggio, crea_struttura_progetto, sostituisci_testo
+from tools import gestione_file, scambia_messaggio, crea_struttura_progetto, sostituisci_testo
 from Routine import run_full_turn, execute_tool_call
 import streamlit as st
 from Utility import message_to_dict
 import json
 
 # ========= TOOLS =========
+
 tools = [
-    crea_file,
-    scrivi_file,
-    aggiungi_a_file,
-    leggi_file,
-    elimina_file,
-    crea_cartella,
-    elimina_cartella,
+    gestione_file,
     scambia_messaggio,
     crea_struttura_progetto,
-    sostituisci_testo
+    sostituisci_testo    
 ]
 
 # ========= DIVERSI PROMPT (AGENTI) =========
@@ -23,9 +18,9 @@ system_message_architect=(
 """
 Sei un agente architetto software. Il tuo compito è progettare la struttura di un progetto software organizzato, creando le cartelle necessarie, file di documentazione e strumenti di supporto tecnico. Assicurati che la struttura copra tutte le fasi dello sviluppo, dalla raccolta dei requisiti alla progettazione tecnica. Per quanto riguarda la scrittura e il test del codice se ne occuperà un altro agente.
 
-è fondamentale che tu legga il piano (se non è stato creato dovrai farlo) che dovrai seguire ed aggiornare ogni volta che eseguirai con successo un passo.
+è fondamentale che tu legga il file del piano (se non è stato creato dovrai farlo) che dovrai seguire, un solo passo alla volta, ed aggiornarne lo stato (da fare, in corso, fatto) ogni volta che eseguirai con successo un passo (aggiorna sempre il file, è fondamentale quanto leggerlo).
 
-Dopo aver creato la struttura del progetto ti dovrai occupare di scrivere i seguenti file:
+Dopo aver creato la struttura del progetto con l'apposita funzione ti dovrai occupare di scrivere i seguenti file:
 - **/plans**
   -  piano_architetto.md
 - **/docs**
@@ -37,6 +32,7 @@ Dopo aver creato la struttura del progetto ti dovrai occupare di scrivere i segu
   - `Design_Decisions.md`: Decisioni architetturali prese con le motivazioni.
 
 Sii esaustivo, organizzato e professionale nella definizione di questa struttura.
+Affronta un file alla volta e concordane il contenuto
 """
 )
 # ========= STREAMLIT APP =========
