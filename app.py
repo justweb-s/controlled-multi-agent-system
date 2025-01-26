@@ -1,4 +1,4 @@
-from tools import crea_file, scrivi_file, aggiungi_a_file, leggi_file, elimina_file, crea_cartella, elimina_cartella, scambia_messaggio, crea_struttura_progetto
+from tools import crea_file, scrivi_file, aggiungi_a_file, leggi_file, elimina_file, crea_cartella, elimina_cartella, scambia_messaggio, crea_struttura_progetto, sostituisci_testo
 from Routine import run_full_turn, execute_tool_call
 import streamlit as st
 from Utility import message_to_dict
@@ -14,15 +14,20 @@ tools = [
     crea_cartella,
     elimina_cartella,
     scambia_messaggio,
-    crea_struttura_progetto
+    crea_struttura_progetto,
+    sostituisci_testo
 ]
 
 # ========= DIVERSI PROMPT (AGENTI) =========
 system_message_architect=(
 """
-Sei un agente architetto software. Il tuo compito è progettare la struttura di un progetto software organizzato, creando le cartelle necessarie, file di documentazione e strumenti di supporto tecnico. Assicurati che la struttura copra tutte le fasi dello sviluppo, dalla raccolta dei requisiti alla progettazione tecnica. Per quanto riguarda la scrittura e il test del codice se ne occuperà un altro agente
+Sei un agente architetto software. Il tuo compito è progettare la struttura di un progetto software organizzato, creando le cartelle necessarie, file di documentazione e strumenti di supporto tecnico. Assicurati che la struttura copra tutte le fasi dello sviluppo, dalla raccolta dei requisiti alla progettazione tecnica. Per quanto riguarda la scrittura e il test del codice se ne occuperà un altro agente.
 
-Crea la seguente struttura:
+è fondamentale che tu legga il piano (se non è stato creato dovrai farlo) che dovrai seguire ed aggiornare ogni volta che eseguirai con successo un passo.
+
+Dopo aver creato la struttura del progetto ti dovrai occupare di scrivere i seguenti file:
+- **/plans**
+  -  piano_architetto.md
 - **/docs**
   - `README.md`: Una descrizione generale del progetto.
   - `Project_Requirements.md`: Requisiti funzionali e non funzionali.
@@ -31,38 +36,7 @@ Crea la seguente struttura:
   - `API_Documentation.md`: Specifiche API.
   - `Design_Decisions.md`: Decisioni architetturali prese con le motivazioni.
 
-- **/src**
-  - `main/`: Codice sorgente del progetto.
-  - `tests/`: Test unitari, di integrazione e funzionali.
-
-- **/config**
-  - `config.yaml`: Configurazioni di sistema e ambiente.
-  - `logging.yaml`: Configurazioni del logging.
-
-- **/requirements**
-  - `requirements.txt`: Dipendenze Python.
-  - `dev-requirements.txt`: Dipendenze per lo sviluppo.
-
-- **/build**
-  - `build_script.sh`: Script per automatizzare la build.
-
-- **/scripts**
-  - `setup_env.sh`: Script per configurare l'ambiente.
-  - `data_preprocessing.py`: Script per il preprocessing dei dati, se necessario.
-
-- **/tests**
-  - `test_plan.md`: Piano di test.
-  - `unit_tests.py`: Test unitari.
-  - `integration_tests.py`: Test di integrazione.
-
-- **/data** (se applicabile)
-  - `raw/`: Dati grezzi.
-  - `processed/`: Dati preprocessati.
-
-- **/.github**
-  - `workflows/`: Definisci i flussi CI/CD.
-
-Assicurati che i file chiave come `README.md`, `Project_Requirements.md` e `Technical_Specifications.md` contengano template preimpostati per facilitare il lavoro di squadra. Sii esaustivo, organizzato e professionale nella definizione di questa struttura.
+Sii esaustivo, organizzato e professionale nella definizione di questa struttura.
 """
 )
 # ========= STREAMLIT APP =========

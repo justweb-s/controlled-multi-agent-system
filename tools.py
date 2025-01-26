@@ -142,6 +142,7 @@ def crea_struttura_progetto(base_path: str) -> str:
     try:
         # Creazione delle cartelle principali
         cartelle = [
+            "plans",
             "/docs",
             "/src/main",
             "/src/tests",
@@ -158,6 +159,8 @@ def crea_struttura_progetto(base_path: str) -> str:
 
         # Creazione dei file all'interno delle cartelle
         file_e_contenuti = {
+            "/plans/piano_architetto.md": "# Piano Architetto",
+            "/plans/piano_developer.md": "# Piano Developer",
             "/docs/README.md": "# Descrizione del progetto",
             "/docs/Project_Requirements.md": "# Requisiti di progetto",
             "/docs/Technical_Specifications.md": "# Specifiche tecniche",
@@ -184,3 +187,32 @@ def crea_struttura_progetto(base_path: str) -> str:
         return f"Struttura del progetto creata con successo in '{base_path}'."
     except Exception as e:
         return f"Errore durante la creazione della struttura del progetto: {e}"
+    
+def sostituisci_testo(percorso_file: str, testo_da_sostituire: str, testo_sostitutivo: str) -> str:
+    """
+    Sostituisce un testo specifico in un file con un altro testo e restituisce un messaggio sul risultato.
+    
+    Args:
+        percorso_file (str): Il percorso del file in cui eseguire la sostituzione.
+        testo_da_sostituire (str): Il testo da sostituire.
+        testo_sostitutivo (str): Il testo sostitutivo.
+        
+    Returns:
+        str: Messaggio che indica se la sostituzione è stata completata o se c'è stato un errore.
+    """
+    try:
+        # Legge il contenuto del file
+        with open(percorso_file, 'r', encoding='utf-8') as file:
+            contenuto = file.read()
+        
+        # Sostituisce il testo
+        contenuto_modificato = contenuto.replace(testo_da_sostituire, testo_sostitutivo)
+        
+        # Salva il contenuto modificato nel file
+        with open(percorso_file, 'w', encoding='utf-8') as file:
+            file.write(contenuto_modificato)
+        
+        return "Sostituzione completata con successo!"
+    except Exception as e:
+        return f"Errore durante la sostituzione del testo: {e}"
+
